@@ -1,0 +1,86 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vote Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+    .candidates-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .candidate-card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+    }
+    .candidate-card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+    .candidate-card h3 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    .candidate-card p {
+      margin-bottom: 10px;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .candidate-card input[type="radio"] {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vote for Candidates</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <h2>Positions</h2>
+    <div class="candidates-container">
+      {% for position in positions %}
+        <h3>{{ position.name }}</h3>
+        <div class="candidates">
+          {% for candidate in candidates %}
+            {% if candidate.position_id == position.id %}
+              <div class="candidate-card">
+                <input type="radio" name="candidate_id" value="{{ candidate.id }}" />
+                <input type="hidden" name="position_id" value="{{ position.id }}" />
+                <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}" />
+                <h3>{{ candidate.name }}</h3>
+                <p>{{ candidate.bio }}</p>
+                {% for key, value in votez.items %}
+                  {% if key == candidate.id %}
+                    <p>Votes: {{ value }}</p>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <input type="submit" value="Vote" />
+  </form>
+</body>
+</html>

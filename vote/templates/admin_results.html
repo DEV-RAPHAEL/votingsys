@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Results Page</title>
+</head>
+<body>
+    <h1>Voting Results</h1>
+    
+    <h2>Total Votes: {{ votes|length }}</h2>
+
+    <h2>Votes per Candidate:</h2>
+    <ul>
+        {% for candidate, count in votes_per_candidate.items %}
+            <li>{{ candidate }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>All Votes:</h2>
+    <ul>
+        {% for vote in votes %}
+            <li>{{ vote }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
